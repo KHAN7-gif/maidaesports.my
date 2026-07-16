@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MAIDA Esports — Admin Dashboard</title>
+<meta name="theme-color" content="#ffffff" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#f5f5f7;--panel:#ffffff;--ink:#1d1d1f;--soft:#6e6e73;--mut:#86868b;
+    --line:rgba(0,0,0,.09);--line-2:rgba(0,0,0,.06);--blue:#0071e3;--red:#ff3b30;--green:#34c759;
+    --glass:rgba(255,255,255,.7);--shadow:0 10px 40px rgba(0,0,0,.07);--shadow-lg:0 24px 70px rgba(0,0,0,.12);
+    --r:18px;--r-sm:12px;
+    --font:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter","Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.5;letter-spacing:-.01em;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  button{font-family:inherit;cursor:pointer}
+  input,textarea,select{font-family:inherit;font-size:14px;width:100%;padding:11px 13px;border:1px solid var(--line);
+    border-radius:10px;background:#fff;color:var(--ink);outline:none;transition:border .2s,box-shadow .2s}
+  input:focus,textarea:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,113,227,.15)}
+  textarea{resize:vertical;min-height:78px}
+  label{display:block;font-size:12px;font-weight:600;color:var(--soft);margin:0 0 6px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;font-size:14px;font-weight:600;
+    padding:10px 16px;border-radius:980px;border:1px solid transparent;transition:transform .15s,background .2s,box-shadow .2s}
+  .btn:hover{transform:translateY(-1px)}
+  .btn.dark{background:var(--ink);color:#fff}.btn.dark:hover{background:#000}
+  .btn.blue{background:var(--blue);color:#fff}.btn.blue:hover{background:#0077ed}
+  .btn.ghost{background:#fff;border-color:var(--line);color:var(--ink)}.btn.ghost:hover{box-shadow:var(--shadow)}
+  .btn.red{background:#fff;border-color:rgba(255,59,48,.35);color:var(--red)}.btn.red:hover{background:var(--red);color:#fff;border-color:var(--red)}
+  .btn.sm{padding:7px 12px;font-size:13px}
+  .hide{display:none!important}
+
+  /* LOGIN */
+  #login{position:fixed;inset:0;display:grid;place-items:center;background:
+    radial-gradient(700px 400px at 20% 10%,rgba(125,177,255,.5),transparent 60%),
+    radial-gradient(700px 400px at 90% 90%,rgba(196,167,255,.5),transparent 60%),var(--bg);z-index:100;padding:20px}
+  .login-card{width:100%;max-width:380px;background:var(--glass);-webkit-backdrop-filter:blur(24px) saturate(180%);
+    backdrop-filter:blur(24px) saturate(180%);border:1px solid rgba(255,255,255,.7);border-radius:24px;
+    box-shadow:var(--shadow-lg);padding:34px}
+  .login-card .mark{width:48px;height:48px;border-radius:14px;background:var(--ink);color:#fff;display:grid;place-items:center;
+    font-weight:800;font-size:17px;margin-bottom:18px}
+  .login-card h1{font-size:22px;font-weight:700;letter-spacing:-.02em}
+  .login-card p{color:var(--soft);font-size:13px;margin:4px 0 20px}
+  .login-card .btn{width:100%;margin-top:14px}
+  .err{color:var(--red);font-size:13px;font-weight:500;margin-top:10px;min-height:18px}
+
+  /* LAYOUT */
+  .app{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
+  aside{position:sticky;top:0;height:100vh;background:var(--panel);border-right:1px solid var(--line);
+    padding:20px 16px;display:flex;flex-direction:column;gap:6px;overflow:auto}
+  .brand{display:flex;align-items:center;gap:11px;padding:8px 8px 18px;font-weight:700;font-size:18px}
+  .brand .mark{width:34px;height:34px;border-radius:10px;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:800;font-size:13px}
+  .brand small{display:block;font-size:9px;font-weight:600;letter-spacing:.16em;color:var(--mut)}
+  .nav-item{display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:12px;font-size:14px;font-weight:500;color:var(--soft);border:0;background:none;width:100%;text-align:left;transition:.15s}
+  .nav-item:hover{background:var(--bg);color:var(--ink)}
+  .nav-item.active{background:var(--ink);color:#fff}
+  .nav-item .ic{font-size:17px;width:22px;text-align:center}
+  .nav-sep{height:1px;background:var(--line);margin:10px 4px}
+  .side-foot{margin-top:auto;display:flex;flex-direction:column;gap:8px;padding-top:12px}
+
+  main{padding:26px clamp(18px,3vw,44px) 60px;width:100%}
+  .content{max-width:1180px;margin:0 auto}
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:26px}
+  .topbar h2{font-size:clamp(22px,3vw,30px);font-weight:700;letter-spacing:-.03em}
+  .topbar .sub{color:var(--soft);font-size:14px;margin-top:2px}
+  .top-actions{display:flex;gap:9px;flex-wrap:wrap}
+  .saved{font-size:12px;color:var(--green);font-weight:600;opacity:0;transition:opacity .3s;display:inline-flex;align-items:center;gap:6px}
+  .saved.show{opacity:1}
+
+  /* LIST CARDS */
+  .list{display:flex;flex-direction:column;gap:12px}
+  .item{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;
+    display:flex;align-items:center;gap:16px;box-shadow:var(--shadow)}
+  .item .grip{font-size:18px;color:var(--mut)}
+  .item .meta{flex:1;min-width:0}
+  .item .meta h3{font-size:15px;font-weight:600;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .item .meta p{font-size:13px;color:var(--soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+  .item .acts{display:flex;gap:8px;flex:none}
+  .pill{font-size:11px;font-weight:600;padding:3px 9px;border-radius:980px;background:var(--bg);color:var(--soft);border:1px solid var(--line)}
+  .pill.up{background:rgba(52,199,89,.12);color:#1c7a36;border-color:transparent}
+  .empty{text-align:center;color:var(--mut);padding:50px 20px;border:1.5px dashed var(--line);border-radius:var(--r)}
+
+  /* CARD/FORM SECTION */
+  .formcard{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:24px;box-shadow:var(--shadow)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .field{margin-bottom:14px}
+
+  /* MODAL */
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.35);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+    display:none;align-items:flex-start;justify-content:center;padding:5vh 18px;z-index:90;overflow:auto}
+  .modal.open{display:flex}
+  .modal-card{width:100%;max-width:560px;background:var(--panel);border-radius:22px;box-shadow:var(--shadow-lg);
+    border:1px solid var(--line);overflow:hidden;animation:pop .2s ease}
+  @keyframes pop{from{transform:translateY(12px) scale(.98);opacity:0}to{transform:none;opacity:1}}
+  .modal-head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--line)}
+  .modal-head h3{font-size:17px;font-weight:700}
+  .modal-head .x{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:#fff;font-size:16px;display:grid;place-items:center}
+  .modal-body{padding:22px;max-height:64vh;overflow:auto}
+  .modal-foot{display:flex;justify-content:flex-end;gap:10px;padding:16px 22px;border-top:1px solid var(--line);background:var(--bg)}
+
+  .hint{font-size:12px;color:var(--mut);margin-top:6px;line-height:1.45}
+  .img-prev{width:100%;aspect-ratio:16/10;border-radius:12px;overflow:hidden;background:#eef0f6;border:1px solid var(--line);margin-bottom:10px}
+  .img-prev img{width:100%;height:100%;object-fit:cover}
+  .banner-prev{width:100%;aspect-ratio:960/359;border-radius:12px;overflow:hidden;background:#e2e4f0;margin-bottom:12px;border:1px solid var(--line)}
+  .banner-prev img{width:100%;height:100%;object-fit:cover}
+  .burger{display:none}
+  .scrim{position:fixed;inset:0;background:rgba(0,0,0,.32);z-index:65;display:none}
+  .scrim.show{display:block}
+
+  /* DASHBOARD */
+  .dash-hero{background:linear-gradient(120deg,#0a84ff,#5e5ce6 55%,#bf5af2);color:#fff;border-radius:var(--r);
+    padding:28px;display:flex;justify-content:space-between;align-items:center;gap:20px;box-shadow:var(--shadow);margin-bottom:18px}
+  .dash-hi{font-size:13px;font-weight:600;opacity:.9}
+  .dash-hero h3{font-size:clamp(19px,2.4vw,26px);font-weight:700;letter-spacing:-.02em;margin:6px 0 6px;max-width:30ch}
+  .dash-hero p{font-size:14px;opacity:.92;max-width:46ch}
+  .dash-quick{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+  .dash-quick .btn.dark{background:#fff;color:var(--ink)}
+  .dash-quick .btn.ghost{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.4);color:#fff}
+  .dash-badge{flex:none;text-align:center;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.4);
+    border-radius:18px;padding:18px 22px;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+  .dash-badge span{display:block;font-size:38px;font-weight:800;line-height:1}
+  .dash-badge small{font-size:11px;font-weight:600;opacity:.9}
+  .dash-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px}
+  .dash-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:22px;text-align:left;
+    box-shadow:var(--shadow);transition:transform .18s,box-shadow .18s}
+  .dash-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+  .dash-ic{font-size:24px}
+  .dash-n{font-size:34px;font-weight:800;letter-spacing:-.03em;margin-top:8px}
+  .dash-t{font-size:13px;color:var(--soft);font-weight:600}
+  .dash-prev-wrap{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px;box-shadow:var(--shadow)}
+  .dash-prev-head{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:14px}
+  .dash-prev{width:100%;height:460px;border:1px solid var(--line);border-radius:12px;background:#fff}
+
+  /* ===== DESKTOP TIERS ===== */
+  /* big screens: widen content + taller preview */
+  @media(min-width:1500px){
+    .content{max-width:1320px}
+    .dash-prev{height:560px}
+    .dash-grid{gap:18px}
+  }
+  /* small desktop: slimmer sidebar */
+  @media(min-width:981px) and (max-width:1180px){
+    .app{grid-template-columns:212px 1fr}
+    main{padding:24px 24px 56px}
+    .dash-prev{height:400px}
+  }
+
+  /* ===== ICON RAIL (sidebar tetap kelihatan, ikon sahaja) 701–980px ===== */
+  @media(min-width:701px) and (max-width:980px){
+    .app{grid-template-columns:66px 1fr}
+    aside{padding:18px 8px;align-items:center}
+    .brand{font-size:0;padding:6px 0 16px;justify-content:center}
+    .brand .mark{font-size:13px}
+    .nav-item{font-size:0;justify-content:center;padding:12px 0;width:46px;gap:0}
+    .nav-item .ic{font-size:18px;width:auto}
+    .nav-sep{width:34px;margin:8px auto}
+    .side-foot{display:none}
+    main{padding:24px 24px 56px}
+    .dash-grid{grid-template-columns:1fr 1fr}
+    .dash-prev{height:400px}
+    .burger{display:none}
+  }
+
+  /* ===== MOBILE DRAWER ≤700px ===== */
+  @media(max-width:700px){
+    .app{grid-template-columns:1fr}
+    aside{position:fixed;left:0;top:0;width:262px;height:100vh;z-index:70;transform:translateX(-100%);transition:transform .25s;box-shadow:var(--shadow-lg)}
+    aside.open{transform:none}
+    .scrim{position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:65;display:none}
+    .scrim.show{display:block}
+    .burger{display:grid;place-items:center;width:42px;height:42px;border-radius:10px;border:1px solid var(--line);background:#fff;font-size:18px}
+    .grid2{grid-template-columns:1fr}
+    .dash-hero{flex-direction:column;align-items:flex-start}
+    .dash-grid{grid-template-columns:1fr 1fr}
+    .dash-prev{height:340px}
+  }
+  @media(max-width:440px){
+    .dash-grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login">
+  <div class="login-card">
+    <div class="mark">MDE</div>
+    <h1>Admin Dashboard</h1>
+    <p>MAIDA Esports — log masuk untuk urus kandungan laman.</p>
+    <label>Nama pengguna</label>
+    <input type="text" id="user" placeholder="admin7" autocomplete="username" />
+    <label style="margin-top:12px">Kata laluan</label>
+    <input type="password" id="pw" placeholder="••••••••" autocomplete="current-password" />
+    <div class="err" id="loginErr"></div>
+    <button class="btn dark" id="loginBtn">Log Masuk</button>
+    <p class="hint" style="margin-top:14px">Tukar nama pengguna / kata laluan dalam kod (<code>USERNAME</code> &amp; <code>PASSWORD</code>). Nota: ini pagar ringkas di pelayar sahaja.</p>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="app hide" id="app">
+  <div class="scrim" id="scrim"></div>
+  <aside id="aside">
+    <div class="brand"><span class="mark">MDE</span><span>MAIDA<small>ADMIN PANEL</small></span></div>
+    <button class="nav-item active" data-sec="dashboard"><span class="ic">🏠</span> Papan Pemuka</button>
+    <div class="nav-sep"></div>
+    <button class="nav-item" data-sec="slides"><span class="ic">🖼️</span> Slaid Hero</button>
+    <button class="nav-item" data-sec="stats"><span class="ic">📊</span> Statistik</button>
+    <button class="nav-item" data-sec="services"><span class="ic">🧩</span> Perkhidmatan</button>
+    <button class="nav-item" data-sec="events"><span class="ic">🏆</span> Acara</button>
+    <button class="nav-item" data-sec="gallery"><span class="ic">🖼</span> Galeri</button>
+    <button class="nav-item" data-sec="partners"><span class="ic">🤝</span> Rakan</button>
+    <div class="nav-sep"></div>
+    <button class="nav-item" data-sec="banner"><span class="ic">🌆</span> Banner</button>
+    <button class="nav-item" data-sec="settings"><span class="ic">⚙️</span> Tetapan & Hubungi</button>
+    <div class="side-foot">
+      <a class="btn ghost sm" href="index.html" target="_blank">↗ Buka Laman Web</a>
+      <button class="btn ghost sm" id="logout">Log Keluar</button>
+    </div>
+  </aside>
+
+  <main>
+    <div class="content">
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="burger" id="burger">☰</button>
+        <div>
+          <h2 id="secTitle">Slaid Hero</h2>
+          <div class="sub" id="secSub">Urus teks slaid di bahagian atas laman.</div>
+        </div>
+      </div>
+      <div class="top-actions">
+        <span class="saved" id="savedMsg">✓ Disimpan</span>
+        <button class="btn ghost sm" id="importBtn">⤓ Import</button>
+        <button class="btn ghost sm" id="exportBtn">⤒ Export</button>
+        <button class="btn ghost sm" id="resetBtn">↺ Reset</button>
+        <button class="btn blue sm" id="addBtn">+ Tambah</button>
+      </div>
+    </div>
+    <div id="view"></div>
+    </div>
+  </main>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-card">
+    <div class="modal-head"><h3 id="modalTitle">Tambah</h3><button class="x" id="modalClose">✕</button></div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-foot">
+      <button class="btn ghost" id="modalCancel">Batal</button>
+      <button class="btn dark" id="modalSave">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="importFile" accept="application/json" class="hide" />
+
+<script>
+const USERNAME = "admin7";             // <-- tukar nama pengguna di sini
+const PASSWORD = "maida2026";          // <-- tukar kata laluan di sini
+const KEY = "maida_content";
+
+/* ---------- storage shim (localStorage, fallback memori) ---------- */
+const mem={};
+const store={
+  get(k){ try{return localStorage.getItem(k)}catch(e){return k in mem?mem[k]:null} },
+  set(k,v){ try{localStorage.setItem(k,v)}catch(e){mem[k]=v} }
+};
+
+/* ---------- default content (padan laman semasa) ---------- */
+const DEFAULTS = {
+  slides:[
+    {eyebrow:"Labuan Leading Esports Community",title:"MAIDA Esports is just the beginning.",soft:"is just the",highlight:"beginning.",sub:"Komuniti esports utama di WP Labuan — penganjur tournament, pengurusan bakat & studio gaming konsol PS4 / PS5.",btn1:"Sertai Tournament",btn1href:"#events",btn2:"Lawati Studio",btn2href:"#studio",note:"No. Pendaftaran C-LBN-0028 · #MAIDAESPORTS"},
+    {eyebrow:"Tournament · Akan Datang",title:"Jadi juara seterusnya.",highlight:"juara",soft:"seterusnya.",sub:"Daftar untuk MAIDA Open Series 2026 — bracket rasmi, hadiah lumayan & penstriman langsung. Buktikan kau yang terbaik.",btn1:"Daftar Sekarang",btn1href:"#events",btn2:"Lihat Jadual",btn2href:"https://www.instagram.com/maidaesports/",note:"PUBG Mobile · Mobile Legends · eFootball · Tekken"},
+    {eyebrow:"Console Studio · PS4 & PS5",title:"Lepak gaming di studio kami.",highlight:"di studio kami.",soft:"",sub:"Kemudahan konsol PlayStation 4 & PlayStation 5 untuk peminat esports. Datang, main, dan jadi sebahagian komuniti MAIDA.",btn1:"WhatsApp Kami",btn1href:"https://wa.me/601116175077",btn2:"Maklumat Studio",btn2href:"#studio",note:"WP Labuan, Malaysia · 011-1617 5077"}
+  ],
+  stats:[
+    {num:"7",suffix:"+",label:"Tahun Beroperasi"},
+    {num:"30",suffix:"+",label:"Tournament Dianjurkan"},
+    {num:"1500",suffix:"+",label:"Pemain Terlibat"},
+    {num:"10",suffix:"+",label:"Game Disokong"}
+  ],
+  services:[
+    {icon:"🏆",tag:"01 · TOURNAMENT",title:"Tournament Organizer",desc:"Penganjur kejohanan esports rasmi peringkat sekolah, wilayah dan kebangsaan — bracket, hadiah, penjurian & penstriman langsung."},
+    {icon:"🎯",tag:"02 · TALENT",title:"Talent Management",desc:"Pengurusan pemain & pencipta kandungan — pembangunan bakat, jaringan sponsor dan bimbingan kerjaya dalam industri esukan."},
+    {icon:"🎮",tag:"03 · STUDIO",title:"Console Gaming Studio",desc:"Studio konsol PlayStation 4 & PlayStation 5 untuk peminat esports — ruang lepak, latihan dan sesi gaming bersama komuniti."}
+  ],
+  events:[
+    {status:"Akan Datang",category:"Mobile Legends, PUBG Mobile, eFootball",month:"",year:"2026",dateNote:"Daftar segera",title:"MAIDA Open Series 2026",desc:"Pendaftaran dibuka — ikuti IG @maidaesports untuk tarikh penuh.",image:"",link:"https://www.instagram.com/maidaesports/",linkText:"Daftar Sekarang"},
+    {status:"Selesai",category:"Multi-Game",month:"",year:"2025",dateNote:"",title:"NADI X Esports 2025",desc:"Kerjasama komuniti NADI — kejohanan pelbagai game peringkat Labuan.",image:"",link:"",linkText:""},
+    {status:"Selesai",category:"eFootball Mobile, eFootball Console",month:"",year:"2023",dateNote:"",title:"eFootball Mobile Labuan Pro Series",desc:"Siri profesional eFootball Mobile peringkat WP Labuan.",image:"",link:"",linkText:""},
+    {status:"Selesai",category:"Multi-Game",month:"",year:"2022",dateNote:"",title:"Esports Wilayah 2022",desc:"Kejohanan rasmi peringkat wilayah dengan slot pemilihan kebangsaan.",image:"",link:"",linkText:""},
+    {status:"Selesai",category:"PUBG Mobile",month:"",year:"2022",dateNote:"",title:"HSN 2022 — PUBG Mobile",desc:"Hari Sukan Negara PUBG Mobile, laluan ke pemilihan wakil Malaysia.",image:"",link:"",linkText:""},
+    {status:"Selesai",category:"PUBG Mobile",month:"",year:"2019",dateNote:"",title:"LA21 PUBG Mobile Labuan Series",desc:"Antara siri perintis esports MAIDA di Labuan.",image:"",link:"",linkText:""}
+  ],
+  gallery:[{label:"MAIN STAGE"},{label:"GRAND FINAL"},{label:"PS5 STUDIO"},{label:"COMMUNITY"},{label:"CHAMPIONS"},{label:"CASTERS"},{label:"MEET & GREET"},{label:"SETUP"}],
+  partners:[
+    {name:"Jabatan Belia & Sukan Labuan",href:"#",logo:""},
+    {name:"Perbadanan Labuan",href:"#",logo:""},
+    {name:"Komuniti NADI Labuan",href:"#",logo:""},
+    {name:"Esports Malaysia",href:"#",logo:""}
+  ],
+  banner:"",
+  settings:{phone:"011-1617 5077",location:"WP Labuan, Malaysia",console:"PlayStation 4 & PlayStation 5",reg:"C-LBN-0028",
+    ig:"https://www.instagram.com/maidaesports/",fb:"https://www.facebook.com/maidaesports",tt:"https://www.tiktok.com/@maidaesports",lt:"https://linktr.ee/MAIDAESPORTS"}
+};
+
+/* ---------- schema per section ---------- */
+const SCHEMA = {
+  dashboard:{title:"Papan Pemuka",sub:"Ringkasan kandungan laman MAIDA Esports.",list:false},
+  slides:{title:"Slaid Hero",sub:"Urus teks slaid di bahagian atas laman.",list:true,
+    fields:[
+      {k:"eyebrow",t:"Label atas (eyebrow)"},
+      {k:"title",t:"Tajuk penuh (ayat lengkap)"},
+      {k:"highlight",t:"Perkataan warna gradien (mesti ada dlm tajuk)"},
+      {k:"soft",t:"Perkataan warna kelabu (mesti ada dlm tajuk)"},
+      {k:"sub",t:"Sari kata",type:"textarea"},
+      {k:"btn1",t:"Butang 1 — teks"},{k:"btn1href",t:"Butang 1 — pautan"},
+      {k:"btn2",t:"Butang 2 — teks"},{k:"btn2href",t:"Butang 2 — pautan"},
+      {k:"note",t:"Nota kecil bawah"}
+    ],
+    rowTitle:i=>i.eyebrow||"Slaid",rowSub:i=>i.title},
+  stats:{title:"Statistik",sub:"Nombor pencapaian yang dipaparkan di laman.",list:true,
+    fields:[{k:"num",t:"Nombor (cth 1500)"},{k:"suffix",t:"Akhiran (cth +)"},{k:"label",t:"Label"}],
+    rowTitle:i=>(i.num||"")+(i.suffix||""),rowSub:i=>i.label},
+  services:{title:"Perkhidmatan",sub:"Kad perkhidmatan MAIDA.",list:true,
+    fields:[{k:"icon",t:"Ikon (emoji)"},{k:"tag",t:"Tag kecil (cth 01 · TOURNAMENT)"},{k:"title",t:"Tajuk"},{k:"desc",t:"Penerangan",type:"textarea"}],
+    rowTitle:i=>(i.icon||"")+" "+(i.title||""),rowSub:i=>i.tag},
+  events:{title:"Acara",sub:"Senarai tournament & acara.",list:true,
+    fields:[
+      {k:"status",t:"Status",type:"select",opts:["Akan Datang","Selesai"]},
+      {k:"category",t:"Kategori game (pisah dgn koma untuk berbilang)"},
+      {k:"month",t:"Bulan",type:"select",opts:["","Januari","Februari","Mac","April","Mei","Jun","Julai","Ogos","September","Oktober","November","Disember"]},
+      {k:"year",t:"Tahun (cth 2026)"},
+      {k:"dateNote",t:"Nota tarikh (pilihan, cth Daftar segera)"},
+      {k:"title",t:"Tajuk acara"},
+      {k:"desc",t:"Penerangan",type:"textarea"},
+      {k:"image",t:"Gambar (URL atau muat naik)",type:"image"},
+      {k:"link",t:"Pautan butang (URL)"},
+      {k:"linkText",t:"Teks butang (cth Daftar)"}
+    ],
+    rowTitle:i=>i.title||"Acara",rowSub:i=>[i.status,i.category,[i.month,i.year].filter(Boolean).join(' ')].filter(Boolean).join(" · ")},
+  gallery:{title:"Galeri",sub:"Petak galeri (teks atau URL gambar).",list:true,
+    fields:[{k:"label",t:"Teks / URL gambar"}],
+    rowTitle:i=>i.label||"Petak",rowSub:i=>/^https?:\/\//.test(i.label||"")?"Gambar":"Teks"},
+  partners:{title:"Rakan",sub:"Logo rakan kerjasama (jalur bergerak).",list:true,
+    fields:[{k:"name",t:"Nama"},{k:"logo",t:"Logo (URL atau muat naik)",type:"image"},{k:"href",t:"Pautan"}],
+    rowTitle:i=>i.name||"Rakan",rowSub:i=>i.logo?"✓ Ada logo":"Teks sahaja"},
+  banner:{title:"Banner",sub:"Gambar banner statik di atas laman.",list:false},
+  settings:{title:"Tetapan & Hubungi",sub:"Maklumat hubungan & media sosial.",list:false,
+    fields:[{k:"phone",t:"Telefon"},{k:"location",t:"Lokasi"},{k:"console",t:"Konsol"},{k:"reg",t:"No. Pendaftaran"},
+      {k:"ig",t:"Instagram URL"},{k:"fb",t:"Facebook URL"},{k:"tt",t:"TikTok URL"},{k:"lt",t:"Linktree URL"}]}
+};
+
+/* ---------- state ---------- */
+let data = load();
+let current = "dashboard";
+let editIndex = null;
+
+function load(){
+  const raw = store.get(KEY);
+  if(raw){ try{ return Object.assign(JSON.parse(JSON.stringify(DEFAULTS)), JSON.parse(raw)); }catch(e){} }
+  return JSON.parse(JSON.stringify(DEFAULTS));
+}
+function save(){ store.set(KEY, JSON.stringify(data)); flashSaved(); if(window.cloudSave) window.cloudSave(data); }
+function flashSaved(){ const m=document.getElementById('savedMsg'); m.classList.add('show'); setTimeout(()=>m.classList.remove('show'),1400); }
+
+// hook untuk modul Firebase (data sahaja, tanpa Auth)
+window.getData=()=>data;
+window.applyCloud=(d)=>{ data=Object.assign(JSON.parse(JSON.stringify(DEFAULTS)), d||{}); store.set(KEY, JSON.stringify(data)); render(); };
+
+/* ---------- login (nama pengguna + kata laluan di pelayar) ---------- */
+const loginBtn=document.getElementById('loginBtn'), pw=document.getElementById('pw'), userEl=document.getElementById('user');
+function tryLogin(){
+  const err=document.getElementById('loginErr');
+  if(userEl.value.trim()===USERNAME && pw.value===PASSWORD){
+    try{sessionStorage.setItem('maida_admin','1')}catch(e){}
+    err.textContent="";
+    document.getElementById('login').classList.add('hide');
+    document.getElementById('app').classList.remove('hide');
+    render();
+    if(window.cloudLoad) window.cloudLoad();
+  } else { err.textContent="Nama pengguna atau kata laluan salah."; }
+}
+loginBtn.addEventListener('click',tryLogin);
+[userEl,pw].forEach(el=>el.addEventListener('keydown',e=>{if(e.key==='Enter')tryLogin();}));
+document.getElementById('logout').addEventListener('click',()=>{
+  try{sessionStorage.removeItem('maida_admin')}catch(e){}
+  document.getElementById('app').classList.add('hide');
+  document.getElementById('login').classList.remove('hide');
+  userEl.value=""; pw.value="";
+});
+try{ if(sessionStorage.getItem('maida_admin')==='1'){ document.getElementById('login').classList.add('hide'); document.getElementById('app').classList.remove('hide'); if(window.cloudLoad) setTimeout(()=>window.cloudLoad(),300); } }catch(e){}
+
+/* ---------- nav ---------- */
+document.querySelectorAll('.nav-item').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active'); current=b.dataset.sec; render(); closeAside();
+}));
+const aside=document.getElementById('aside'), scrim=document.getElementById('scrim');
+document.getElementById('burger').addEventListener('click',()=>{aside.classList.add('open');scrim.classList.add('show');});
+function closeAside(){aside.classList.remove('open');scrim.classList.remove('show');}
+scrim.addEventListener('click',closeAside);
+
+/* ---------- render ---------- */
+const esc=s=>(s==null?"":String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function render(){
+  const sc=SCHEMA[current];
+  document.getElementById('secTitle').textContent=sc.title;
+  document.getElementById('secSub').textContent=sc.sub;
+  document.getElementById('addBtn').style.display = sc.list ? "" : "none";
+  const view=document.getElementById('view');
+
+  if(current==="dashboard"){ renderDashboard(view); return; }
+  if(current==="banner"){ renderBanner(view); return; }
+  if(!sc.list){ renderSettings(view,sc); return; }
+
+  const arr=data[current]||[];
+  if(!arr.length){ view.innerHTML=`<div class="empty">Tiada item lagi. Klik <b>+ Tambah</b> untuk mula.</div>`; return; }
+  view.innerHTML=`<div class="list">`+arr.map((it,i)=>{
+    const up = current==="events" && it.status==="Akan Datang";
+    return `<div class="item">
+      <span class="grip">⋮⋮</span>
+      <div class="meta">
+        <h3>${esc(sc.rowTitle(it))} ${up?'<span class="pill up">Akan Datang</span>':''}</h3>
+        <p>${esc(sc.rowSub(it))}</p>
+      </div>
+      <div class="acts">
+        <button class="btn ghost sm" onclick="move(${i},-1)">↑</button>
+        <button class="btn ghost sm" onclick="move(${i},1)">↓</button>
+        <button class="btn ghost sm" onclick="openEdit(${i})">Edit</button>
+        <button class="btn red sm" onclick="del(${i})">Padam</button>
+      </div>
+    </div>`;
+  }).join('')+`</div>`;
+}
+
+function renderDashboard(view){
+  const cards=[
+    {sec:"slides",ic:"🖼️",t:"Slaid Hero",n:(data.slides||[]).length},
+    {sec:"stats",ic:"📊",t:"Statistik",n:(data.stats||[]).length},
+    {sec:"services",ic:"🧩",t:"Perkhidmatan",n:(data.services||[]).length},
+    {sec:"events",ic:"🏆",t:"Acara",n:(data.events||[]).length},
+    {sec:"gallery",ic:"🖼",t:"Galeri",n:(data.gallery||[]).length},
+    {sec:"partners",ic:"🤝",t:"Rakan",n:(data.partners||[]).length}
+  ];
+  const upcoming=(data.events||[]).filter(e=>e.status==="Akan Datang").length;
+  view.innerHTML=`
+    <div class="dash-hero">
+      <div>
+        <div class="dash-hi">Selamat datang 👋</div>
+        <h3>Urus kandungan laman MAIDA Esports dari satu tempat.</h3>
+        <p>Klik mana-mana kad untuk edit, atau guna butang tambah pantas di bawah.</p>
+        <div class="dash-quick">
+          <button class="btn dark sm" onclick="goAdd('events')">+ Acara</button>
+          <button class="btn ghost sm" onclick="goAdd('slides')">+ Slaid</button>
+          <button class="btn ghost sm" onclick="goAdd('gallery')">+ Galeri</button>
+          <a class="btn ghost sm" href="index.html" target="_blank">↗ Buka Laman</a>
+        </div>
+      </div>
+      <div class="dash-badge"><span>${upcoming}</span><small>Acara akan datang</small></div>
+    </div>
+
+    <div class="dash-grid">`+
+      cards.map(c=>`<button class="dash-card" onclick="goto('${c.sec}')">
+        <div class="dash-ic">${c.ic}</div>
+        <div class="dash-n">${c.n}</div>
+        <div class="dash-t">${c.t}</div>
+      </button>`).join('')+
+    `</div>
+
+    <div class="dash-prev-wrap">
+      <div class="dash-prev-head">
+        <div><b>Pratonton Langsung</b><span class="hint" style="display:block">Paparan semasa index.html</span></div>
+        <button class="btn ghost sm" onclick="document.getElementById('prevFrame').contentWindow.location.reload()">↻ Muat semula</button>
+      </div>
+      <iframe id="prevFrame" class="dash-prev" src="index.html" title="Pratonton"></iframe>
+      <p class="hint">✓ Laman <b>index.html</b> kini membaca data ini terus. Setiap kali anda <b>Simpan</b>, klik <b>↻ Muat semula</b> untuk lihat perubahan. Untuk laman yang dihos (pelawat lain), klik <b>Export</b> dan muat naik <code>maida-content.json</code> ke pelayan.</p>
+    </div>`;
+}
+
+function renderSettings(view,sc){
+  const s=data.settings;
+  view.innerHTML=`<div class="formcard"><div class="grid2">`+
+    sc.fields.map(f=>`<div class="field"><label>${f.t}</label><input id="set_${f.k}" value="${esc(s[f.k]||'')}"></div>`).join('')+
+    `</div><div style="margin-top:8px"><button class="btn dark" id="saveSet">Simpan Tetapan</button></div></div>`;
+  document.getElementById('saveSet').addEventListener('click',()=>{
+    sc.fields.forEach(f=>{ data.settings[f.k]=document.getElementById('set_'+f.k).value; });
+    save(); render();
+  });
+}
+
+function renderBanner(view){
+  const img = data.banner ? `<img src="${esc(data.banner)}">` : `<div style="display:grid;place-items:center;height:100%;color:#fff;font-weight:800;font-size:26px;background:linear-gradient(135deg,#0a84ff,#5e5ce6,#bf5af2)">MAIDA ESPORTS</div>`;
+  view.innerHTML=`<div class="formcard">
+    <div class="banner-prev">${img}</div>
+    <div class="field"><label>URL gambar banner (atau muat naik di bawah)</label><input id="bUrl" value="${esc(data.banner&&data.banner.startsWith('data:')?'':data.banner)}" placeholder="https://...jpg"></div>
+    <div class="field"><label>Muat naik fail (disimpan dalam pelayar)</label><input type="file" id="bFile" accept="image/*"></div>
+    <p class="hint">Saiz disyorkan: <b>1920×720px</b> (nisbah ~8:3), &lt; 400KB. Gambar dimuat naik disimpan sebagai data dalam pelayar ini.</p>
+    <div style="margin-top:10px;display:flex;gap:10px"><button class="btn dark" id="bSave">Simpan Banner</button><button class="btn red" id="bClear">Buang</button></div>
+  </div>`;
+  document.getElementById('bSave').addEventListener('click',()=>{
+    const u=document.getElementById('bUrl').value.trim(); if(u){ data.banner=u; save(); render(); }
+  });
+  document.getElementById('bClear').addEventListener('click',()=>{ data.banner=""; save(); render(); });
+  document.getElementById('bFile').addEventListener('change',e=>{
+    const f=e.target.files[0]; if(!f) return;
+    const r=new FileReader(); r.onload=()=>{ data.banner=r.result; save(); render(); }; r.readAsDataURL(f);
+  });
+}
+
+/* ---------- CRUD ---------- */
+function move(i,dir){ const a=data[current]; const j=i+dir; if(j<0||j>=a.length)return; [a[i],a[j]]=[a[j],a[i]]; save(); render(); }
+function del(i){ if(confirm("Padam item ini?")){ data[current].splice(i,1); save(); render(); } }
+window.move=move; window.del=del; window.openEdit=openEdit;
+function goto(sec){
+  current=sec;
+  document.querySelectorAll('.nav-item').forEach(x=>x.classList.toggle('active',x.dataset.sec===sec));
+  render();
+}
+function goAdd(sec){ goto(sec); openAdd(); }
+window.goto=goto; window.goAdd=goAdd;
+
+const modal=document.getElementById('modal'), modalBody=document.getElementById('modalBody');
+function openAdd(){ editIndex=null; openModal({}); }
+function openEdit(i){ editIndex=i; openModal(Object.assign({},data[current][i])); }
+function openModal(obj){
+  const sc=SCHEMA[current];
+  document.getElementById('modalTitle').textContent=(editIndex===null?"Tambah ":"Edit ")+sc.title.replace(/s$/,'');
+  modalBody.innerHTML=sc.fields.map(f=>{
+    if(f.type==="textarea") return `<div class="field"><label>${f.t}</label><textarea id="f_${f.k}">${esc(obj[f.k]||'')}</textarea></div>`;
+    if(f.type==="select") return `<div class="field"><label>${f.t}</label><select id="f_${f.k}">`+f.opts.map(o=>`<option ${obj[f.k]===o?'selected':''}>${o}</option>`).join('')+`</select></div>`;
+    if(f.type==="image") return `<div class="field"><label>${f.t}</label>
+        <div id="prev_${f.k}" class="img-prev ${obj[f.k]?'':'hide'}">${obj[f.k]?`<img src="${esc(obj[f.k])}">`:''}</div>
+        <input id="f_${f.k}" value="${esc(obj[f.k]||'')}" placeholder="https://...jpg / png / webp">
+        <input type="file" id="file_${f.k}" accept="image/*" style="margin-top:8px">
+        <p class="hint">Saiz disyorkan: <b>1200×750px</b> (nisbah 16:10), format JPG / WebP / PNG, &lt; 300KB.</p>
+      </div>`;
+    return `<div class="field"><label>${f.t}</label><input id="f_${f.k}" value="${esc(obj[f.k]||'')}"></div>`;
+  }).join('');
+  // image upload handlers
+  sc.fields.filter(f=>f.type==="image").forEach(f=>{
+    const file=document.getElementById('file_'+f.k);
+    if(file) file.addEventListener('change',e=>{
+      const fl=e.target.files[0]; if(!fl) return;
+      const r=new FileReader(); r.onload=()=>{
+        document.getElementById('f_'+f.k).value=r.result;
+        const p=document.getElementById('prev_'+f.k); p.classList.remove('hide'); p.innerHTML='<img src="'+r.result+'">';
+      }; r.readAsDataURL(fl);
+    });
+  });
+  modal.classList.add('open');
+}
+function closeModal(){ modal.classList.remove('open'); }
+document.getElementById('modalClose').addEventListener('click',closeModal);
+document.getElementById('modalCancel').addEventListener('click',closeModal);
+modal.addEventListener('click',e=>{if(e.target===modal)closeModal();});
+document.getElementById('modalSave').addEventListener('click',()=>{
+  const sc=SCHEMA[current]; const obj={};
+  sc.fields.forEach(f=>{ obj[f.k]=document.getElementById('f_'+f.k).value; });
+  if(editIndex===null){ data[current].push(obj); } else { data[current][editIndex]=obj; }
+  save(); closeModal(); render();
+});
+document.getElementById('addBtn').addEventListener('click',openAdd);
+
+/* ---------- export / import / reset ---------- */
+document.getElementById('exportBtn').addEventListener('click',()=>{
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='maida-content.json'; a.click();
+});
+document.getElementById('importBtn').addEventListener('click',()=>document.getElementById('importFile').click());
+document.getElementById('importFile').addEventListener('change',e=>{
+  const f=e.target.files[0]; if(!f)return;
+  const r=new FileReader(); r.onload=()=>{ try{ data=Object.assign(JSON.parse(JSON.stringify(DEFAULTS)),JSON.parse(r.result)); save(); render(); alert("Import berjaya."); }catch(err){ alert("Fail tidak sah."); } };
+  r.readAsText(f); e.target.value="";
+});
+document.getElementById('resetBtn').addEventListener('click',()=>{
+  if(confirm("Reset semua kandungan kepada lalai? Tindakan ini tidak boleh dibatalkan.")){ data=JSON.parse(JSON.stringify(DEFAULTS)); save(); render(); }
+});
+</script>
+<script type="module">
+  // ---- Firebase Realtime Database (simpan/muat data; log masuk kekal kata laluan mudah) ----
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+  import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+  const firebaseConfig = {
+    apiKey: "AIzaSyCcTJO9K0gXRaCbzdxqxY7hKr0x1PhNHEQ",
+    authDomain: "maidaesportsmy.firebaseapp.com",
+    databaseURL: "https://maidaesportsmy-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "maidaesportsmy",
+    storageBucket: "maidaesportsmy.firebasestorage.app",
+    messagingSenderId: "870248060201",
+    appId: "1:870248060201:web:2954d8fed62c18d47dd338"
+  };
+  const db = getDatabase(initializeApp(firebaseConfig));
+  const node = ref(db, "site/content");
+  // RTDB tolak nilai undefined — bersihkan dulu
+  const clean=(o)=>JSON.parse(JSON.stringify(o??null));
+  window.cloudSave=async(d)=>{
+    try{ await set(node, clean(d)); }
+    catch(err){ console.warn('Simpan awan gagal:',err); alert('Gagal simpan ke Firebase ('+(err.code||err.message)+').\nSemak Realtime Database Rules.'); }
+  };
+  window.cloudLoad=async()=>{
+    try{
+      const s=await get(node);
+      if(s.exists()){ window.applyCloud && window.applyCloud(s.val()); }
+      else if(window.getData){ await set(node, clean(window.getData())); }   // seed kali pertama
+    }catch(err){ console.warn('Muat awan gagal:',err); }
+  };
+</script>
+</body>
+</html>
