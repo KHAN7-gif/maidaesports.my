@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Semua Acara — MAIDA Esports</title>
+<meta name="description" content="Senarai penuh tournament & acara MAIDA Esports — cari dan tapis ikut game, tahun." />
+<meta name="theme-color" content="#ffffff" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#ffffff;--bg-2:#f5f5f7;--ink:#1d1d1f;--soft:#6e6e73;--mut:#86868b;
+    --line:rgba(0,0,0,.08);--line-2:rgba(0,0,0,.06);--blue:#0071e3;
+    --glass:rgba(255,255,255,.6);--glass-bd:rgba(255,255,255,.7);
+    --shadow:0 10px 40px rgba(0,0,0,.06);--shadow-lg:0 24px 70px rgba(0,0,0,.10);
+    --r:20px;--r-lg:28px;--r-sm:14px;--maxw:1120px;
+    --font:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter","Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.5;letter-spacing:-.01em;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px}
+  .blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.45;z-index:0;pointer-events:none}
+  .b-blue{background:radial-gradient(circle,#7db1ff,transparent 70%)}
+  .b-violet{background:radial-gradient(circle,#c4a7ff,transparent 70%)}
+  .b-teal{background:radial-gradient(circle,#8be7d8,transparent 70%)}
+  .b-amber{background:radial-gradient(circle,#ffd79e,transparent 70%)}
+
+  /* NAV */
+  header.nav{position:sticky;top:0;z-index:80;background:rgba(255,255,255,.72);
+    -webkit-backdrop-filter:blur(22px) saturate(180%);backdrop-filter:blur(22px) saturate(180%);border-bottom:1px solid var(--line-2)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:60px}
+  .brand{display:flex;align-items:center;gap:11px;font-weight:700;font-size:19px;letter-spacing:-.02em}
+  .mark{width:34px;height:34px;border-radius:10px;flex:none;display:grid;place-items:center;background:var(--ink);color:#fff;font-weight:800;font-size:13px}
+  .brand small{display:block;font-size:9px;font-weight:600;letter-spacing:.16em;color:var(--mut);margin-top:1px}
+  .back{display:inline-flex;align-items:center;gap:7px;font-size:14px;font-weight:500;color:var(--soft);
+    padding:9px 16px;border-radius:980px;border:1px solid var(--line);background:#fff;transition:.2s}
+  .back:hover{color:var(--ink);box-shadow:var(--shadow)}
+
+  /* HEAD */
+  .head{position:relative;overflow:hidden;padding:clamp(40px,6vw,72px) 0 clamp(24px,3vw,34px);background:var(--bg-2);border-bottom:1px solid var(--line-2)}
+  .head .b1{width:460px;height:460px;top:-220px;left:-100px}
+  .head .b2{width:420px;height:420px;top:-200px;right:-80px}
+  .eyebrow{font-size:13px;font-weight:600;letter-spacing:.02em;text-transform:uppercase;color:var(--blue);position:relative;z-index:2}
+  .head h1{font-size:clamp(32px,6vw,58px);font-weight:700;letter-spacing:-.03em;line-height:1.02;margin-top:12px;position:relative;z-index:2}
+  .head p{color:var(--soft);font-size:clamp(15px,1.7vw,18px);margin-top:12px;max-width:56ch;position:relative;z-index:2}
+
+  /* FILTER BAR */
+  .filters{position:sticky;top:60px;z-index:60;background:rgba(245,245,247,.82);
+    -webkit-backdrop-filter:blur(18px) saturate(180%);backdrop-filter:blur(18px) saturate(180%);border-bottom:1px solid var(--line-2)}
+  .filters-in{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:16px 0}
+  .search{flex:1;min-width:220px;position:relative}
+  .search input{width:100%;padding:12px 14px 12px 40px;border:1px solid var(--line);border-radius:12px;background:#fff;font-family:inherit;font-size:14px;outline:none;transition:.2s}
+  .search input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,113,227,.15)}
+  .search .ic{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--mut);font-size:15px}
+  select.f{padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:#fff;font-family:inherit;font-size:14px;color:var(--ink);outline:none;cursor:pointer;transition:.2s}
+  select.f:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,113,227,.15)}
+  .reset{padding:12px 16px;border:1px solid var(--line);border-radius:12px;background:#fff;font-size:14px;font-weight:500;color:var(--soft);cursor:pointer;transition:.2s}
+  .reset:hover{color:var(--ink);box-shadow:var(--shadow)}
+  .count{color:var(--mut);font-size:13px;font-weight:500;padding:6px 0}
+
+  /* GRID */
+  main{padding:clamp(28px,4vw,44px) 0 80px}
+  .events{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .ev{border-radius:var(--r);overflow:hidden;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);
+    transition:transform .25s,box-shadow .25s;display:flex;flex-direction:column}
+  .ev:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg)}
+  .ev-top{aspect-ratio:16/10;display:grid;place-items:center;position:relative;background:linear-gradient(135deg,#eef1f6,#f7f8fb)}
+  .ev-top img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+  .ev-game{position:relative;z-index:2;font-size:24px;font-weight:700;letter-spacing:-.02em;text-align:center;color:var(--ink);padding:0 16px;line-height:1.05}
+  .ev-tag{position:absolute;top:12px;left:12px;z-index:3;font-size:11px;font-weight:600;letter-spacing:.04em;background:var(--ink);color:#fff;padding:5px 11px;border-radius:980px}
+  .ev-tag.done{background:rgba(255,255,255,.8);color:var(--soft);border:1px solid var(--line)}
+  .ev-cats{position:absolute;bottom:12px;left:12px;right:12px;z-index:3;display:flex;flex-wrap:wrap;gap:6px}
+  .ev-cat{font-size:11px;font-weight:600;letter-spacing:.02em;background:rgba(255,255,255,.85);
+    -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px) saturate(180%);color:var(--ink);padding:5px 11px;border-radius:980px;border:1px solid rgba(255,255,255,.7)}
+  .ev-body{padding:22px;display:flex;flex-direction:column;gap:7px;flex:1}
+  .ev-date{font-size:12px;font-weight:600;letter-spacing:.04em;color:var(--blue)}
+  .ev-body h3{font-size:17px;font-weight:600;letter-spacing:-.01em;line-height:1.3}
+  .ev-body p{color:var(--soft);font-size:14px;margin-top:auto}
+  .ev-btn{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;margin-top:14px;font-size:14px;font-weight:600;color:#fff;background:var(--ink);padding:9px 16px;border-radius:980px;transition:transform .15s,background .2s}
+  .ev-btn:hover{transform:translateY(-1px);background:#000}
+  .empty{grid-column:1/-1;text-align:center;color:var(--mut);padding:70px 20px;border:1.5px dashed var(--line);border-radius:var(--r)}
+
+  @media(max-width:900px){.events{grid-template-columns:1fr 1fr}}
+  @media(max-width:600px){
+    .events{grid-template-columns:1fr}
+    .filters-in{gap:9px}
+    .search{flex-basis:100%}
+    select.f,.reset{flex:1}
+    .filters{top:56px}
+    .nav-in{height:56px}
+  }
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="index.html"><span class="mark">MDE</span><span>MAIDA<small>ESPORTS · LABUAN</small></span></a>
+    <a class="back" href="index.html">← Kembali ke Laman</a>
+  </div>
+</header>
+
+<section class="head">
+  <span class="blob b-blue b1"></span>
+  <span class="blob b-violet b2"></span>
+  <div class="wrap">
+    <span class="eyebrow">Acara</span>
+    <h1>Semua tournament &amp; acara.</h1>
+    <p>Arkib penuh acara MAIDA Esports. Cari, atau tapis ikut game dan tahun.</p>
+  </div>
+</section>
+
+<div class="filters">
+  <div class="wrap filters-in">
+    <div class="search"><span class="ic">🔍</span><input id="q" type="search" placeholder="Cari acara (tajuk, penerangan, game)…" /></div>
+    <select class="f" id="fCat"><option value="">Semua game</option></select>
+    <select class="f" id="fYear"><option value="">Semua tahun</option></select>
+    <select class="f" id="fSort">
+      <option value="az">Susun: A–Z</option>
+      <option value="za">Susun: Z–A</option>
+      <option value="new">Tahun terbaru</option>
+      <option value="old">Tahun terlama</option>
+    </select>
+    <button class="reset" id="reset">Set semula</button>
+  </div>
+</div>
+
+<main>
+  <div class="wrap">
+    <div class="count" id="count"></div>
+    <div class="events" id="grid"></div>
+  </div>
+</main>
+
+<script>
+  const esc=s=>(s==null?"":String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const blobs=['b-blue','b-violet','b-teal','b-amber'];
+
+  const FALLBACK_EVENTS=[
+    {status:"Akan Datang",category:"Mobile Legends, PUBG Mobile, eFootball",month:"",year:"2026",dateNote:"Daftar segera",title:"MAIDA Open Series 2026",desc:"Pendaftaran dibuka — ikuti IG @maidaesports untuk tarikh penuh.",image:"",link:"https://www.instagram.com/maidaesports/",linkText:"Daftar Sekarang"},
+    {status:"Selesai",category:"Multi-Game",month:"",year:"2025",dateNote:"",title:"NADI X Esports 2025",desc:"Kerjasama komuniti NADI — kejohanan pelbagai game peringkat Labuan.",image:"",link:"",linkText:""},
+    {status:"Selesai",category:"eFootball Mobile, eFootball Console",month:"",year:"2023",dateNote:"",title:"eFootball Mobile Labuan Pro Series",desc:"Siri profesional eFootball Mobile peringkat WP Labuan.",image:"",link:"",linkText:""},
+    {status:"Selesai",category:"Multi-Game",month:"",year:"2022",dateNote:"",title:"Esports Wilayah 2022",desc:"Kejohanan rasmi peringkat wilayah dengan slot pemilihan kebangsaan.",image:"",link:"",linkText:""},
+    {status:"Selesai",category:"PUBG Mobile",month:"",year:"2022",dateNote:"",title:"HSN 2022 — PUBG Mobile",desc:"Hari Sukan Negara PUBG Mobile, laluan ke pemilihan wakil Malaysia.",image:"",link:"",linkText:""},
+    {status:"Selesai",category:"PUBG Mobile",month:"",year:"2019",dateNote:"",title:"LA21 PUBG Mobile Labuan Series",desc:"Antara siri perintis esports MAIDA di Labuan.",image:"",link:"",linkText:""}
+  ];
+  const MONTHS=["januari","februari","mac","april","mei","jun","julai","ogos","september","oktober","november","disember"];
+
+  let EV=[];
+  const catsOf=e=>(e.category||e.game||'').split(',').map(s=>s.trim()).filter(Boolean);
+  const composeDate=e=>{const dm=[e.month,e.year].filter(Boolean).join(' ');if(!dm&&!e.dateNote)return e.date||'';return e.dateNote?(dm?dm+' · '+e.dateNote:e.dateNote):dm;};
+  const yearOf=e=>{ if(e.year) return parseInt(e.year,10)||0; const m=(e.date||'').match(/\b(19|20)\d{2}\b/); return m?parseInt(m[0],10):0; };
+
+  function card(e,i){
+    const done=e.status!=="Akan Datang";
+    const cats=catsOf(e);
+    const catPills=cats.length?`<div class="ev-cats">${cats.map(c=>`<span class="ev-cat">${esc(c)}</span>`).join('')}</div>`:'';
+    const top=e.image?`<img src="${esc(e.image)}" alt="${esc(e.title||'')}" loading="lazy">`
+      :`<span class="ev-game">${esc(cats[0]||e.title||'').replace(/ /g,'<br>')}</span>`;
+    return `<article class="ev">
+      <div class="ev-top">${top}<span class="ev-tag${done?' done':''}">${esc(e.status||'')}</span>${catPills}</div>
+      <div class="ev-body">
+        <span class="ev-date">${esc(composeDate(e))}</span>
+        <h3>${esc(e.title||'')}</h3>
+        <p>${esc(e.desc||'')}</p>
+        ${e.link?`<a class="ev-btn" href="${esc(e.link)}" target="_blank" rel="noopener">${esc(e.linkText||'Lihat')} →</a>`:''}
+      </div>
+    </article>`;
+  }
+
+  function render(){
+    const q=document.getElementById('q').value.trim().toLowerCase();
+    const cat=document.getElementById('fCat').value;
+    const year=document.getElementById('fYear').value;
+    const sort=document.getElementById('fSort').value;
+    let list=EV.filter(e=>{
+      const hay=[e.title,e.desc,e.category,e.game,composeDate(e)].join(' ').toLowerCase();
+      if(q && !hay.includes(q)) return false;
+      if(cat && !catsOf(e).includes(cat)) return false;
+      if(year && String(yearOf(e))!==year) return false;
+      return true;
+    });
+    list.sort((a,b)=>{
+      if(sort==='az') return (a.title||'').localeCompare(b.title||'');
+      if(sort==='za') return (b.title||'').localeCompare(a.title||'');
+      if(sort==='new') return yearOf(b)-yearOf(a) || (a.title||'').localeCompare(b.title||'');
+      if(sort==='old') return yearOf(a)-yearOf(b) || (a.title||'').localeCompare(b.title||'');
+      return 0;
+    });
+    const grid=document.getElementById('grid');
+    grid.innerHTML=list.length?list.map(card).join(''):`<div class="empty">Tiada acara ditemui. Cuba tukar carian atau tapisan.</div>`;
+    document.getElementById('count').textContent=`Menunjukkan ${list.length} daripada ${EV.length} acara`;
+  }
+
+  function fillFilters(){
+    const cats=new Set(), years=new Set();
+    EV.forEach(e=>{ catsOf(e).forEach(c=>cats.add(c)); const y=yearOf(e); if(y) years.add(y); });
+    const cSel=document.getElementById('fCat');
+    cSel.length=1; // simpan "Semua game"
+    [...cats].sort((a,b)=>a.localeCompare(b)).forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;cSel.appendChild(o);});
+    const ySel=document.getElementById('fYear');
+    ySel.length=1; // simpan "Semua tahun"
+    [...years].sort((a,b)=>b-a).forEach(y=>{const o=document.createElement('option');o.value=y;o.textContent=y;ySel.appendChild(o);});
+  }
+
+  ['q','fCat','fYear','fSort'].forEach(id=>document.getElementById(id).addEventListener('input',render));
+  document.getElementById('reset').addEventListener('click',()=>{
+    document.getElementById('q').value='';document.getElementById('fCat').value='';
+    document.getElementById('fYear').value='';document.getElementById('fSort').value='az';render();
+  });
+
+  (async function boot(){
+    let data=null;
+    try{ const ls=localStorage.getItem('maida_content'); if(ls) data=JSON.parse(ls); }catch(e){}
+    if(!data){ try{ const r=await fetch('maida-content.json',{cache:'no-store'}); if(r.ok) data=await r.json(); }catch(e){} }
+    EV=(data&&Array.isArray(data.events)&&data.events.length)?data.events:FALLBACK_EVENTS;
+    fillFilters(); render();
+  })();
+  window.MAIDA_EVENTS=function(events){ if(Array.isArray(events)&&events.length){ EV=events; fillFilters(); render(); } };
+</script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+  import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+  const firebaseConfig = {
+    apiKey: "AIzaSyCcTJO9K0gXRaCbzdxqxY7hKr0x1PhNHEQ",
+    authDomain: "maidaesportsmy.firebaseapp.com",
+    databaseURL: "https://maidaesportsmy-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "maidaesportsmy",
+    storageBucket: "maidaesportsmy.firebasestorage.app",
+    messagingSenderId: "870248060201",
+    appId: "1:870248060201:web:2954d8fed62c18d47dd338"
+  };
+  try{
+    const db = getDatabase(initializeApp(firebaseConfig));
+    onValue(ref(db,"site/content"),(snap)=>{
+      const d=snap.val();
+      if(d){
+        try{ localStorage.setItem("maida_content",JSON.stringify(d)); }catch(e){}
+        if(window.MAIDA_EVENTS) window.MAIDA_EVENTS(d.events);
+      }
+    },(err)=>console.warn("RTDB:",err));
+  }catch(e){ console.warn("Firebase init:",e); }
+</script>
+</body>
+</html>
