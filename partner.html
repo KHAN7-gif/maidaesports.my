@@ -1,0 +1,69 @@
+<!doctype html><html lang="ms"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Rakan Kerjasama — MAIDA Esports</title><style>
+:root{--pink:#e5007d;--ink:#0b0b12;--mut:#737783;--line:#e9e9ef;--bg:#f7f7fa}*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:var(--bg)}a{text-decoration:none;color:inherit}.wrap{width:min(1180px,calc(100% - 36px));margin:auto}header{padding:28px 0 10px}.back{font-weight:700;color:var(--pink)}.eyebrow{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--pink);margin-top:38px}h1{font-size:clamp(34px,6vw,64px);line-height:.98;margin:10px 0 12px;letter-spacing:-.045em}.lead{color:var(--mut);max-width:680px;line-height:1.65;margin:0 0 42px}.category{margin:0 0 42px}.cat-head{display:flex;align-items:end;gap:14px;margin-bottom:18px}.cat-head h2{margin:0;font-size:clamp(22px,3vw,32px);letter-spacing:-.03em}.cat-head span{font-size:12px;color:var(--mut)}.logos{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:18px;align-items:stretch}.logo-card{min-height:150px;background:#fff;border:1px solid var(--line);border-radius:20px;display:flex;align-items:center;justify-content:center;padding:22px;box-shadow:0 8px 30px rgba(15,15,25,.05)}.logo-card img{width:100%;height:100%;max-height:105px;object-fit:contain;filter:grayscale(1);opacity:.68;transition:filter .2s,opacity .2s}.logo-card:hover img,.logo-card:focus img{filter:none;opacity:1}.logo-card .name{text-align:center;color:#555;font-weight:700}footer{margin-top:70px;padding:30px 0 50px;border-top:1px solid var(--line);color:#777;font-size:13px}@media(max-width:900px){.logos{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:560px){.wrap{width:calc(100% - 24px)}.logos{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.logo-card{min-height:125px;padding:16px;border-radius:16px}.logo-card img{max-height:82px}}
+</style><style id="maida-shared-header-css">
+.maida-shared-header .nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.82);-webkit-backdrop-filter:blur(22px) saturate(180%);backdrop-filter:blur(22px) saturate(180%);border-bottom:1px solid rgba(89,55,160,.10)}
+.maida-shared-header .nav-in{width:min(1180px,calc(100% - 40px));margin:auto;height:60px;display:flex;align-items:center;justify-content:space-between}
+.maida-shared-header .brand{display:flex;align-items:center;gap:11px;color:#1d1530;text-decoration:none;font-weight:700;font-size:19px;letter-spacing:-.02em}
+.maida-shared-header .mark{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:#1d1530;color:#fff;font-weight:800;font-size:13px;overflow:hidden;flex:none}
+.maida-shared-header .mark img{width:100%;height:100%;object-fit:contain}
+.maida-shared-header .menu{display:flex;align-items:center;gap:24px}
+.maida-shared-header .menu>a,.maida-shared-header .nav-group>button{font-size:14px;color:#716a80;font-weight:400;text-decoration:none}
+.maida-shared-header .menu>a:hover,.maida-shared-header .nav-group:hover>button{color:#1d1530}
+.maida-shared-header .nav-group{position:relative;height:60px;display:flex;align-items:center}
+.maida-shared-header .nav-group>button{appearance:none;border:0;background:none;font:inherit;cursor:pointer;padding:8px 0}
+.maida-shared-header .nav-group>button::after{content:"⌄";font-size:11px;margin-left:5px;opacity:.55}
+.maida-shared-header .dropdown{position:absolute;top:54px;left:-12px;min-width:220px;padding:8px;background:rgba(255,255,255,.97);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border:1px solid rgba(89,55,160,.10);border-radius:15px;box-shadow:0 24px 70px rgba(74,42,160,.14);opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .18s ease,transform .18s ease,visibility .18s}
+.maida-shared-header .nav-group:hover>.dropdown,.maida-shared-header .nav-group:focus-within>.dropdown{opacity:1;visibility:visible;transform:none}
+.maida-shared-header .dropdown>a,.maida-shared-header .nested-trigger{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-radius:10px;color:#716a80;font-size:14px;text-decoration:none;white-space:nowrap}
+.maida-shared-header .dropdown>a:hover,.maida-shared-header .nested-trigger:hover{background:#f5f1ff;color:#1d1530}
+.maida-shared-header .nested-group{position:relative}
+.maida-shared-header .nested-dropdown{position:absolute;left:calc(100% + 6px);top:-8px;min-width:150px;padding:8px;background:rgba(255,255,255,.97);border:1px solid rgba(89,55,160,.10);border-radius:14px;box-shadow:0 20px 50px rgba(74,42,160,.13);opacity:0;visibility:hidden;transform:translateX(5px);transition:opacity .16s ease,transform .16s ease,visibility .16s}
+.maida-shared-header .nested-group:hover>.nested-dropdown,.maida-shared-header .nested-group:focus-within>.nested-dropdown{opacity:1;visibility:visible;transform:none}
+.maida-shared-header .nested-dropdown a{display:block;padding:10px 12px;border-radius:9px;color:#716a80;text-decoration:none;font-size:14px}
+.maida-shared-header .nested-dropdown a:hover{background:#f5f1ff;color:#1d1530}
+.maida-shared-header .shop-nav,.maida-shared-header .shop-mobile{display:flex!important;align-items:center;gap:6px}
+.maida-shared-header .shop-svg{width:19px;height:19px;display:block;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.maida-shared-header .cta{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;padding:9px 18px;border-radius:999px;background:#e5007d;color:#fff;font-size:14px;font-weight:700}
+.maida-shared-header .burger{display:none;background:none;border:1px solid rgba(89,55,160,.12);border-radius:10px;width:40px;height:40px;color:#1d1530;font-size:18px;cursor:pointer}
+.maida-shared-header .mobile-menu{display:none;flex-direction:column;padding:8px 22px 18px;background:rgba(255,255,255,.97);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border-bottom:1px solid rgba(89,55,160,.10)}
+.maida-shared-header .mobile-menu.open{display:flex}
+.maida-shared-header .mobile-menu>a{padding:13px 0;color:#716a80;font-weight:500;text-decoration:none;border-bottom:1px solid rgba(89,55,160,.08)}
+.maida-shared-header .mobile-group{border-bottom:1px solid rgba(89,55,160,.08)}
+.maida-shared-header .mobile-group>button{width:100%;display:flex;align-items:center;justify-content:space-between;min-height:52px;padding:13px 0;color:#716a80;font:inherit;font-weight:500;border:0;background:none;cursor:pointer;text-align:left}
+.maida-shared-header .mobile-group>button::after{content:"＋";font-size:18px;color:#9a93aa}
+.maida-shared-header .mobile-group.open>button::after{content:"−"}
+.maida-shared-header .mobile-sub{display:none;padding:0 0 8px 16px;overflow:hidden}
+.maida-shared-header .mobile-group.open .mobile-sub{display:block}
+.maida-shared-header .mobile-sub a{display:block;padding:10px 0;font-size:14px;color:#716a80;text-decoration:none}
+.maida-shared-header .mobile-deep{padding-left:16px!important;font-size:13px!important}
+@media(max-width:900px){.maida-shared-header .menu,.maida-shared-header .cta{display:none}.maida-shared-header .burger{display:grid;place-items:center}.maida-shared-header .nav-in{width:calc(100% - 30px)}}
+</style>
+</head><body>
+<div class="maida-shared-header">
+<header class="nav">
+<div class="nav-in">
+<a class="brand" href="index.html"><span class="mark" id="sharedLogo">MDE</span><span>MAIDA ESPORTS</span></a>
+<nav class="menu" aria-label="Navigasi utama">
+<a href="index.html">Home</a>
+<div class="nav-group"><button type="button">Tentang</button><div class="dropdown">
+<a href="index.html#about">Profil</a><a href="achievement.html">Pencapaian</a><a href="partner.html">Rakan Kerjasama</a>
+</div></div>
+<div class="nav-group"><button type="button">Perkhidmatan</button><div class="dropdown">
+<a href="index.html#services">Tournament Organizer</a>
+<div class="nested-group"><a class="nested-trigger" href="index.html#studio">Gaming Studio <span>›</span></a><div class="nested-dropdown"><a href="game.html">Games</a></div></div>
+</div></div>
+<a href="index.html#esports">Esports</a><a href="acara.html">Acara</a><a href="index.html#contact">Hubungi</a><a class="shop-nav" href="shop.html"><svg class="shop-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6.5 8.5h11l.8 11.2a1.2 1.2 0 0 1-1.2 1.3H6.9a1.2 1.2 0 0 1-1.2-1.3L6.5 8.5Z"/><path d="M9 8.5V6.8a3 3 0 0 1 6 0v1.7"/></svg></a>
+</nav>
+<a class="cta" href="index.html#contact">Sertai Kami</a><button class="burger" id="sharedBurger" type="button" aria-label="Buka menu">☰</button>
+</div>
+<div class="mobile-menu" id="sharedMobileMenu">
+<a href="index.html">Home</a>
+<div class="mobile-group"><button type="button">Tentang</button><div class="mobile-sub"><a href="index.html#about">Profil</a><a href="achievement.html">Pencapaian</a><a href="partner.html">Rakan Kerjasama</a></div></div>
+<div class="mobile-group"><button type="button">Perkhidmatan</button><div class="mobile-sub"><a href="index.html#services">Tournament Organizer</a><a href="index.html#studio">Gaming Studio</a><a class="mobile-deep" href="game.html">Games</a></div></div>
+<a href="index.html#esports">Esports</a><a href="acara.html">Acara</a><a href="index.html#contact">Hubungi</a><a class="shop-mobile" href="shop.html"><svg class="shop-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6.5 8.5h11l.8 11.2a1.2 1.2 0 0 1-1.2 1.3H6.9a1.2 1.2 0 0 1-1.2-1.3L6.5 8.5Z"/><path d="M9 8.5V6.8a3 3 0 0 1 6 0v1.7"/></svg></a>
+<a class="cta" href="index.html#contact" style="margin-top:14px">Sertai Kami</a>
+</div>
+</header></div><main class="wrap" id="partners"></main><footer><div class="wrap">© MAIDA Esports · Rakan Kerjasama</div></footer><script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";import{getDatabase,ref,get}from"https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";const firebaseConfig={apiKey:"AIzaSyCcTJO9K0gXRaCbzdxqxY7hKr0x1PhNHEQ",authDomain:"maidaesportsmy.firebaseapp.com",databaseURL:"https://maidaesportsmy-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"maidaesportsmy",storageBucket:"maidaesportsmy.firebasestorage.app",messagingSenderId:"870248060201",appId:"1:870248060201:web:2954d8fed62c18d47dd338"};const db=getDatabase(initializeApp(firebaseConfig));const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));function drive(u){const s=String(u||'');let m=s.match(/drive\.google\.com\/file\/d\/([^/]+)/);if(m)return`https://drive.google.com/uc?export=view&id=${m[1]}`;m=s.match(/[?&]id=([^&]+)/);return m&&s.includes('drive.google.com')?`https://drive.google.com/uc?export=view&id=${m[1]}`:s}function render(list){const g={Platinum:[],Premium:[],Gold:[],Silver:[],Bronze:[]};(Array.isArray(list)?list:[]).forEach(p=>{if(p.name||p.logo)(g[p.category]||g.Bronze).push(p)});const o=['Platinum','Premium','Gold','Silver','Bronze'];document.getElementById('partners').innerHTML=o.map(c=>{const x=g[c];if(!x.length)return'';return`<section class="category"><div class="cat-head"><h2>${c}</h2><span>${x.length} rakan</span></div><div class="logos">${x.map(p=>{const inner=p.logo?`<img src="${esc(drive(p.logo))}" alt="${esc(p.name)}" loading="lazy">`:`<span class="name">${esc(p.name)}</span>`;return p.href&&p.href!=='#'?`<a class="logo-card" href="${esc(p.href)}" target="_blank" rel="noopener">${inner}</a>`:`<div class="logo-card">${inner}</div>`}).join('')}</div></section>`}).join('')||'<p style="color:#999">Belum ada rakan kerjasama.</p>'}const fallback=[{category:'Platinum',name:'Jabatan Belia & Sukan Labuan',href:'#',logo:''},{category:'Premium',name:'Perbadanan Labuan',href:'#',logo:''},{category:'Gold',name:'Komuniti NADI Labuan',href:'#',logo:''},{category:'Silver',name:'Esports Malaysia',href:'#',logo:''}];(async()=>{let d=null;try{const x=localStorage.getItem('maida_content');if(x)d=JSON.parse(x)}catch(e){}if(d?.partners)render(d.partners);else try{const s=await get(ref(db,'site/content'));render(s.exists()?(s.val().partners||[]):fallback)}catch(e){render(fallback)}})();
+</script><script id="maida-shared-header-js">(function(){const root=document.querySelector(".maida-shared-header");if(!root)return;const burger=root.querySelector("#sharedBurger"),menu=root.querySelector("#sharedMobileMenu");if(burger)burger.addEventListener("click",()=>menu.classList.toggle("open"));root.querySelectorAll(".mobile-group>button").forEach(btn=>btn.addEventListener("click",e=>{e.preventDefault();const g=btn.parentElement,open=g.classList.contains("open");root.querySelectorAll(".mobile-group.open").forEach(x=>{if(x!==g)x.classList.remove("open")});g.classList.toggle("open",!open)}));root.querySelectorAll(".mobile-menu a").forEach(a=>a.addEventListener("click",()=>{menu.classList.remove("open");root.querySelectorAll(".mobile-group.open").forEach(g=>g.classList.remove("open"))}))})();</script>
+</body></html>
