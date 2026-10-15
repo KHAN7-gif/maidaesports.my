@@ -2183,7 +2183,7 @@ footer#contact .copy span:last-child{
         <div class="slide-text">
           <span class="eyebrow anim a1">Console Studio · PS4 &amp; PS5</span>
           <h1 class="anim a2">Lepak gaming <span class="grad">di studio kami.</span></h1>
-          <p class="sub anim a3">Kemudahan konsol PlayStation 4 &amp; PlayStation 5 untuk peminat esports. Datang, main, dan jadi sebahagian komuniti MAIDA.</p>
+          <p class="sub anim a3">Kemudahan konsol PlayStation 4 | PlayStation 5 | Racing Simulator untuk peminat esports. Datang, main, dan jadi sebahagian komuniti MAIDA.</p>
           <div class="slide-cta anim a4">
             <a class="btn dark" href="https://wa.me/601116175077" target="_blank" rel="noopener">WhatsApp Kami</a>
             <a class="btn glass" href="#studio">Maklumat Studio</a>
@@ -2265,7 +2265,7 @@ footer#contact .copy span:last-child{
         <div class="ic">🎮</div>
         <div class="no">03 · STUDIO</div>
         <h3>Console Gaming Studio</h3>
-        <p>Studio konsol PlayStation 4 &amp; PlayStation 5 untuk peminat esports — ruang lepak, latihan dan sesi gaming bersama komuniti.</p>
+        <p>Studio konsol PlayStation 4 | PlayStation 5 | Racing Simulator untuk peminat esports — ruang lepak, latihan dan sesi gaming bersama komuniti.</p>
       </div>
     </div>
   </div>
@@ -2339,17 +2339,16 @@ footer#contact .copy span:last-child{
       <div>
         <span class="eyebrow" data-mde="studio-eyebrow">Console Studio</span>
         <h2 data-mde="studio-title">Lepak gaming di studio kami.</h2>
-        <p data-mde="studio-desc">Kemudahan studio konsol PlayStation 4 &amp; PlayStation 5 disediakan untuk peminat esports. Datang, main, dan jadi sebahagian komuniti MAIDA.</p>
+        <p data-mde="studio-desc">Kemudahan PlayStation 4, PlayStation 5 dan Racing Simulator disediakan untuk peminat esports. Datang, main, dan jadi sebahagian komuniti MAIDA.</p>
         <div class="slide-cta" style="justify-content:flex-start;margin-top:26px">
           <a class="btn dark" href="https://wa.me/601116175077" target="_blank" rel="noopener" data-mde="wa">WhatsApp Kami</a>
           <a class="btn glass" href="game.html" target="_blank" rel="noopener">Senarai Game →</a>
-          <a class="btn glass" href="https://www.instagram.com/maidaesports/" target="_blank" rel="noopener" data-mde="ig-link">Instagram</a>
         </div>
       </div>
       <div>
         <div class="info-row"><span class="k">Telefon</span><span class="v" data-mde="phone">011-1617 5077</span></div>
         <div class="info-row"><span class="k">Lokasi</span><span class="v" data-mde="location">WP Labuan, Malaysia</span></div>
-        <div class="info-row"><span class="k">Konsol</span><span class="v" data-mde="console">PlayStation 4 &amp; PlayStation 5</span></div>
+        <div class="info-row"><span class="k">Konsol</span><span class="v" data-mde="console">PlayStation 4 | PlayStation 5 | Racing Simulator</span></div>
         <div class="info-row"><span class="k">Daftar</span><span class="v" data-mde="reg">C-LBN-0028</span></div>
       </div>
     </div>
@@ -2532,7 +2531,10 @@ footer#contact .copy span:last-child{
       setT('studio-eyebrow', d.studio.eyebrow);
       setT('studio-title', d.studio.title);
       setT('studio-desc', d.studio.desc);
+      // Pastikan kemudahan terkini dipaparkan walaupun Firebase masih menyimpan teks lama.
+      const studioDesc=document.querySelector('[data-mde="studio-desc"]');if(studioDesc)studioDesc.textContent=studioDesc.textContent.replace(/PlayStation 4\s*&\s*PlayStation 5/g,'PlayStation 4, PlayStation 5 dan Racing Simulator');
     }
+    const consoleEl=document.querySelector('[data-mde="console"]');if(consoleEl)consoleEl.textContent='PlayStation 4 | PlayStation 5 | Racing Simulator';
     // BRAND LOGO (header/footer)
     const logo = driveUrl((d.brand&&d.brand.logo) || (d.settings&&d.settings.logo) || '');
     if(logo){ document.querySelectorAll('.mark').forEach(m=>{ m.innerHTML='<img src="'+logo.replace(/"/g,'&quot;')+'" alt="MAIDA">'; m.classList.add('has-logo'); }); }
@@ -2619,13 +2621,13 @@ footer#contact .copy span:last-child{
     slides:[
       {eyebrow:"Labuan Leading Esports Community",title:"MAIDA Esports is just the beginning.",soft:"is just the",highlight:"beginning.",sub:"Komuniti esports utama di WP Labuan — penganjur tournament, pengurusan bakat & studio gaming konsol PS4 / PS5.",btn1:"Sertai Tournament",btn1href:"#events",btn2:"Lawati Studio",btn2href:"#studio",note:"No. Pendaftaran C-LBN-0028 · #MAIDAESPORTS"},
       {eyebrow:"Tournament · Akan Datang",title:"Jadi juara seterusnya.",highlight:"juara",soft:"seterusnya.",sub:"Daftar untuk MAIDA Open Series 2026 — bracket rasmi, hadiah lumayan & penstriman langsung. Buktikan kau yang terbaik.",btn1:"Daftar Sekarang",btn1href:"#events",btn2:"Lihat Jadual",btn2href:"https://www.instagram.com/maidaesports/",note:"PUBG Mobile · Mobile Legends · eFootball · Tekken"},
-      {eyebrow:"Console Studio · PS4 & PS5",title:"Lepak gaming di studio kami.",highlight:"di studio kami.",soft:"",sub:"Kemudahan konsol PlayStation 4 & PlayStation 5 untuk peminat esports. Datang, main, dan jadi sebahagian komuniti MAIDA.",btn1:"WhatsApp Kami",btn1href:"https://wa.me/601116175077",btn2:"Maklumat Studio",btn2href:"#studio",note:"WP Labuan, Malaysia · 011-1617 5077"}
+      {eyebrow:"Console Studio · PS4 & PS5",title:"Lepak gaming di studio kami.",highlight:"di studio kami.",soft:"",sub:"Kemudahan konsol PlayStation 4 | PlayStation 5 | Racing Simulator untuk peminat esports. Datang, main, dan jadi sebahagian komuniti MAIDA.",btn1:"WhatsApp Kami",btn1href:"https://wa.me/601116175077",btn2:"Maklumat Studio",btn2href:"#studio",note:"WP Labuan, Malaysia · 011-1617 5077"}
     ],
     stats:[{num:"7",suffix:"+",label:"Tahun Beroperasi"},{num:"30",suffix:"+",label:"Tournament Dianjurkan"},{num:"1500",suffix:"+",label:"Pemain Terlibat"},{num:"10",suffix:"+",label:"Game Disokong"}],
     services:[
       {icon:"🏆",tag:"01 · TOURNAMENT",title:"Tournament Organizer",desc:"Penganjur kejohanan esports rasmi peringkat sekolah, wilayah dan kebangsaan — bracket, hadiah, penjurian & penstriman langsung.",video:""},
       {icon:"🎯",tag:"02 · TALENT",title:"Talent Management",desc:"Pengurusan pemain & pencipta kandungan — pembangunan bakat, jaringan sponsor dan bimbingan kerjaya dalam industri esukan.",video:""},
-      {icon:"🎮",tag:"03 · STUDIO",title:"Console Gaming Studio",desc:"Studio konsol PlayStation 4 & PlayStation 5 untuk peminat esports — ruang lepak, latihan dan sesi gaming bersama komuniti.",video:""}
+      {icon:"🎮",tag:"03 · STUDIO",title:"Console Gaming Studio",desc:"Studio konsol PlayStation 4 | PlayStation 5 | Racing Simulator untuk peminat esports — ruang lepak, latihan dan sesi gaming bersama komuniti.",video:""}
     ],
     events:[
       {status:"Akan Datang",category:"Mobile Legends, PUBG Mobile, eFootball",month:"",year:"2026",dateNote:"Daftar segera",title:"MAIDA Open Series 2026",desc:"Pendaftaran dibuka — ikuti IG @maidaesports untuk tarikh penuh.",image:"",link:"https://www.instagram.com/maidaesports/",linkText:"Daftar Sekarang"},
@@ -2655,9 +2657,9 @@ footer#contact .copy span:last-child{
     ],
     banner:"",
     brand:{logo:""},
-    studio:{eyebrow:"Console Studio",title:"Lepak gaming di studio kami.",desc:"Kemudahan studio konsol PlayStation 4 & PlayStation 5 disediakan untuk peminat esports. Datang, main, dan jadi sebahagian komuniti MAIDA."},
+    studio:{eyebrow:"Console Studio",title:"Lepak gaming di studio kami.",desc:"Kemudahan PlayStation 4, PlayStation 5 dan Racing Simulator disediakan untuk peminat esports. Datang, main, dan jadi sebahagian komuniti MAIDA."},
     ticker:[{text:"PUBG Mobile"},{text:"Mobile Legends"},{text:"eFootball Mobile"},{text:"Tekken"},{text:"Dota 2"},{text:"EA FC"},{text:"Beyblade Burst"}],
-    settings:{phone:"011-1617 5077",location:"WP Labuan, Malaysia",console:"PlayStation 4 & PlayStation 5",reg:"C-LBN-0028",ig:"https://www.instagram.com/maidaesports/",fb:"https://www.facebook.com/maidaesports",tt:"https://www.tiktok.com/@maidaesports",lt:"https://linktr.ee/MAIDAESPORTS",yt:"https://www.youtube.com/@maidaesports"}
+    settings:{phone:"011-1617 5077",location:"WP Labuan, Malaysia",console:"PlayStation 4 | PlayStation 5 | Racing Simulator",reg:"C-LBN-0028",ig:"https://www.instagram.com/maidaesports/",fb:"https://www.facebook.com/maidaesports",tt:"https://www.tiktok.com/@maidaesports",lt:"https://linktr.ee/MAIDAESPORTS",yt:"https://www.youtube.com/@maidaesports"}
   };
 
   /* ---------- render semua + init ---------- */
