@@ -708,7 +708,7 @@
       const d=snap.val();
       if(d){ try{ localStorage.setItem("maida_content",JSON.stringify(d)); }catch(e){}
         if(window.MAIDA_BRAND) window.MAIDA_BRAND(d);
-        if(window.MAIDA_GAMES) window.MAIDA_GAMES(d.games); }
+        if(window.MAIDA_GAMES) window.MAIDA_GAMES(d.games); if(window.MAIDA_GAME_HERO) window.MAIDA_GAME_HERO(d); }
     },(err)=>console.warn("RTDB:",err));
   }catch(e){ console.warn("Firebase init:",e); }
 </script>
@@ -814,14 +814,14 @@
 </script>
 <script id="maida-game-feature-js">
 (function(){
-let selected=0,items=[];
+let selected=0,items=[];let customBanners=null;
 const bg=document.getElementById('gameFeatureBg'),title=document.getElementById('gameFeatureTitle'),subtitle=document.getElementById('gameFeatureSubtitle'),thumbs=document.getElementById('gameFeatureThumbs');
-function draw(){if(!items.length)return;selected=(selected+items.length)%items.length;const g=items[selected];title.textContent=g.name||'Game';subtitle.textContent=(g.category||'PlayStation 5 · PlayStation 4 · Racing Simulator').replaceAll(',', ' · ');const url=driveUrl(g.banner||g.image||'');bg.style.backgroundImage=url?'url("'+url.replaceAll('"','%22')+'")':'';thumbs.innerHTML=items.map((x,i)=>'<button type="button" class="game-feature-thumb'+(i===selected?' active':'')+'" data-i="'+i+'" aria-label="'+esc(x.name||'Game')+'">'+(x.image?'<img src="'+esc(driveUrl(x.image))+'" alt="" loading="lazy">':'')+'<span>'+esc(x.name||'Game')+'</span></button>').join('');thumbs.querySelector('.active')?.scrollIntoView({block:'nearest',inline:'nearest',behavior:'smooth'});}
-function refresh(){if(typeof GAMES==='undefined')return;items=GAMES.filter(x=>x&&x.name).slice(0,12);if(selected>=items.length)selected=0;draw();}
+function draw(){if(!items.length)return;selected=(selected+items.length)%items.length;const g=items[selected];title.textContent=g.title||g.name||'Game';subtitle.textContent=(g.subtitle||g.category||'PlayStation 5 · PlayStation 4 · Racing Simulator').replaceAll(',', ' · ');const url=driveUrl(g.banner||g.image||'');bg.style.backgroundImage=url?'url("'+url.replaceAll('"','%22')+'")':'';thumbs.innerHTML=items.map((x,i)=>'<button type="button" class="game-feature-thumb'+(i===selected?' active':'')+'" data-i="'+i+'" aria-label="'+esc(x.title||x.name||'Game')+'">'+(x.image?'<img src="'+esc(driveUrl(x.image))+'" alt="" loading="lazy">':'')+'<span>'+esc(x.name||'Game')+'</span></button>').join('');thumbs.querySelector('.active')?.scrollIntoView({block:'nearest',inline:'nearest',behavior:'smooth'});}
+function refresh(){if(typeof GAMES==='undefined')return;items=(customBanners&&customBanners.length?customBanners:GAMES.filter(x=>x&&x.name)).slice(0,12);if(selected>=items.length)selected=0;draw();}
 document.querySelector('.game-feature-prev').addEventListener('click',()=>{selected--;draw()});
 document.querySelector('.game-feature-next').addEventListener('click',()=>{selected++;draw()});
 thumbs.addEventListener('click',e=>{const b=e.target.closest('[data-i]');if(b){selected=Number(b.dataset.i);draw()}});
-const old=window.MAIDA_GAMES;window.MAIDA_GAMES=function(g){if(old)old(g);refresh()};
+const old=window.MAIDA_GAMES;window.MAIDA_GAMES=function(g){if(old)old(g);refresh()};window.MAIDA_GAME_HERO=function(d){customBanners=Array.isArray(d.gameHero)?d.gameHero.filter(x=>x&&x.title&&x.image&&x.enabled!=='Tidak').map(x=>({...x,banner:x.image,name:x.title,category:x.subtitle})):null;refresh()};try{const d=JSON.parse(localStorage.getItem('maida_content')||'null');if(d)window.MAIDA_GAME_HERO(d)}catch(e){}
 refresh();
 })();
 </script></body>
