@@ -240,6 +240,7 @@ input:focus,textarea:focus,select:focus{border-color:#e5007d!important;box-shado
     <div class="brand"><span class="mark">MDE</span><span>MAIDA<small>ADMIN PANEL</small></span></div>
     <button class="nav-item active" data-sec="dashboard"><span class="ic">🏠</span> Papan Pemuka</button>
     <div class="nav-sep"></div>
+    <button class="nav-item" data-sec="gameHero"><span class="ic">🎮</span> Game Hero Banner</button>
     <button class="nav-item" data-sec="slides"><span class="ic">🖼️</span> Slaid Hero</button>
     <button class="nav-item" data-sec="stats"><span class="ic">📊</span> Statistik</button>
     <button class="nav-item" data-sec="services"><span class="ic">🧩</span> Perkhidmatan</button>
@@ -312,6 +313,7 @@ const store={
 
 /* ---------- default content (padan laman semasa) ---------- */
 const DEFAULTS = {
+  gameHero:[],
   slides:[
     {eyebrow:"Labuan Leading Esports Community",title:"MAIDA Esports is just the beginning.",soft:"is just the",highlight:"beginning.",sub:"Komuniti esports utama di WP Labuan — penganjur tournament, pengurusan bakat & studio gaming konsol PS4 / PS5.",btn1:"Sertai Tournament",btn1href:"#events",btn2:"Lawati Studio",btn2href:"#studio",note:"No. Pendaftaran C-LBN-0028 · #MAIDAESPORTS",image:""},
     {eyebrow:"Tournament · Akan Datang",title:"Jadi juara seterusnya.",highlight:"juara",soft:"seterusnya.",sub:"Daftar untuk MAIDA Open Series 2026 — bracket rasmi, hadiah lumayan & penstriman langsung. Buktikan kau yang terbaik.",btn1:"Daftar Sekarang",btn1href:"#events",btn2:"Lihat Jadual",btn2href:"https://www.instagram.com/maidaesports/",note:"PUBG Mobile · Mobile Legends · eFootball · Tekken",image:""},
@@ -372,6 +374,7 @@ const DEFAULTS = {
 /* ---------- schema per section ---------- */
 const SCHEMA = {
   dashboard:{title:"Papan Pemuka",sub:"Ringkasan kandungan laman MAIDA Esports.",list:false},
+  gameHero:{title:"Game Hero Banner",sub:"Urus banner slider khas di halaman List Game, berasingan daripada cover game.",list:true,fields:[{k:"title",t:"Tajuk Banner"},{k:"subtitle",t:"Penerangan",type:"textarea"},{k:"image",t:"Gambar Banner (URL / Google Drive)",type:"image"},{k:"link",t:"Pautan butang (URL)"},{k:"button",t:"Teks butang"},{k:"enabled",t:"Papar? (Ya / Tidak)",type:"select",opts:["Ya","Tidak"]}],rowTitle:i=>i.title||"Banner",rowSub:i=>i.subtitle||"",},
   slides:{title:"Slaid Hero",sub:"Urus teks slaid di bahagian atas laman.",list:true,
     fields:[
       {k:"eyebrow",t:"Label atas (eyebrow)"},
@@ -694,6 +697,7 @@ function move(i,dir){ const a=data[current]; const j=i+dir; if(j<0||j>=a.length)
 function del(i){ if(confirm("Padam item ini?")){ data[current].splice(i,1); save(); render(); } }
 window.move=move; window.del=del; window.openEdit=openEdit;
 function goto(sec){
+  if(sec==="gameHero"&&!Array.isArray(data.gameHero))data.gameHero=[];
   current=sec;
   document.querySelectorAll('.nav-item').forEach(x=>x.classList.toggle('active',x.dataset.sec===sec));
   render();
@@ -707,7 +711,7 @@ function openEdit(i){ editIndex=i; managedKey=(current==="achievement"||current=
 function openModal(obj){
   const sc=SCHEMA[current];
   document.getElementById('modalTitle').textContent=(editIndex===null?"Tambah ":"Edit ")+sc.title.replace(/s$/,'');
-  const guide=current==="slides"
+  const guide=current==="gameHero" ? '<div class="image-guide"><b>Banner Game</b><br>Cadangan 1920 × 720 px, JPG/WebP. Masukkan pautan gambar. Banner aktif dipaparkan mengikut susunan senarai.</div>' : current==="slides"
     ? '<div class="image-guide"><b>📐 Gambar Hero setiap slaid</b><br>Cadangan <b>1600 × 1200 px</b> · nisbah <b>4:3</b> · JPG/WebP · ideal bawah <b>500KB</b>.<br>Setiap slaid boleh mempunyai gambar berbeza. Jika kosong, sistem guna Banner sebagai fallback.</div>'
     : '';
   modalBody.innerHTML=guide+sc.fields.map(f=>{
