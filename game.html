@@ -503,7 +503,24 @@
 }
 </style>
 
-</head>
+<style id="maida-game-feature-css">
+.game-feature{position:relative;background:#080e1c;color:white;min-height:clamp(370px,42vw,650px);overflow:hidden;isolation:isolate}
+.game-feature-bg{position:absolute;inset:0;background:radial-gradient(circle at 75% 35%,#36305c,#0b1022 65%);background-size:cover;background-position:center;transition:background-image .35s}
+.game-feature-bg:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,8,20,.95) 0%,rgba(5,8,20,.78) 39%,rgba(5,8,20,.08) 100%)}
+.game-feature-inner{position:relative;z-index:1;max-width:1180px;margin:auto;padding:clamp(65px,9vw,135px) 65px 75px}
+.game-feature-kicker{font-size:12px;letter-spacing:.2em;color:#ff4eae;font-weight:800;text-transform:uppercase}
+.game-feature h2{font-size:clamp(40px,6vw,85px);letter-spacing:-.05em;line-height:1.06;margin:16px 0 18px;max-width:670px;text-wrap:balance}
+.game-feature p{font-size:clamp(14px,1.5vw,19px);color:#e7e5f2;max-width:520px}
+.game-feature-cta{display:inline-flex;margin-top:25px;padding:13px 23px;border-radius:999px;background:#e5007d;color:white;font-weight:750}
+.game-feature-arrow{position:absolute;top:50%;z-index:3;transform:translateY(-50%);height:44px;width:44px;border:1px solid #ffffff90;border-radius:50%;background:#090d18a8;color:white;font-size:24px;cursor:pointer}
+.game-feature-prev{left:16px}.game-feature-next{right:16px}
+.game-feature-thumbs{display:flex;gap:10px;overflow-x:auto;padding:15px max(22px,calc((100vw - 1180px)/2));background:#0b1020;scrollbar-width:thin}
+.game-feature-thumb{position:relative;flex:0 0 150px;height:82px;border:2px solid #ffffff28;border-radius:13px;overflow:hidden;background:#20283a;color:white;cursor:pointer;text-align:left}
+.game-feature-thumb.active{border-color:#ff008d;box-shadow:0 0 0 2px #ff008d55}
+.game-feature-thumb img{width:100%;height:100%;object-fit:cover}
+.game-feature-thumb span{position:absolute;inset:auto 0 0;padding:13px 7px 5px;background:linear-gradient(transparent,#050713e8);font-size:11px;font-weight:750}
+@media(max-width:650px){.game-feature{min-height:430px}.game-feature-inner{padding:85px 56px 75px}.game-feature-bg:after{background:linear-gradient(90deg,#050814e8,#05081472)}.game-feature-arrow{height:35px;width:35px}.game-feature-prev{left:9px}.game-feature-next{right:9px}.game-feature-thumb{flex-basis:120px;height:72px}}
+</style></head>
 <body>
 <!-- NAV -->
 <header class="nav">
@@ -580,6 +597,7 @@
   </div>
 </section>
 
+<section class="game-feature" aria-label="Pilihan game MAIDA Esports"><div class="game-feature-bg" id="gameFeatureBg"></div><button class="game-feature-arrow game-feature-prev" type="button" aria-label="Game sebelumnya">‹</button><div class="game-feature-inner"><div class="game-feature-kicker">MAIDA ESPORTS · CONSOLE STUDIO</div><h2 id="gameFeatureTitle">Pilihan Game.</h2><p id="gameFeatureSubtitle">PlayStation 5 · PlayStation 4 · Racing Simulator</p><a class="game-feature-cta" href="#grid">Lihat Senarai Game →</a></div><button class="game-feature-arrow game-feature-next" type="button" aria-label="Game seterusnya">›</button></section><div class="game-feature-thumbs" id="gameFeatureThumbs" aria-label="Pilih game"></div>
 <div class="filters">
   <div class="wrap filters-in">
     <div class="tabs" id="tabs">
@@ -794,5 +812,17 @@
   }));
 })();
 </script>
-</body>
+<script id="maida-game-feature-js">
+(function(){
+let selected=0,items=[];
+const bg=document.getElementById('gameFeatureBg'),title=document.getElementById('gameFeatureTitle'),subtitle=document.getElementById('gameFeatureSubtitle'),thumbs=document.getElementById('gameFeatureThumbs');
+function draw(){if(!items.length)return;selected=(selected+items.length)%items.length;const g=items[selected];title.textContent=g.name||'Game';subtitle.textContent=(g.category||'PlayStation 5 · PlayStation 4 · Racing Simulator').replaceAll(',', ' · ');const url=driveUrl(g.banner||g.image||'');bg.style.backgroundImage=url?'url("'+url.replaceAll('"','%22')+'")':'';thumbs.innerHTML=items.map((x,i)=>'<button type="button" class="game-feature-thumb'+(i===selected?' active':'')+'" data-i="'+i+'" aria-label="'+esc(x.name||'Game')+'">'+(x.image?'<img src="'+esc(driveUrl(x.image))+'" alt="" loading="lazy">':'')+'<span>'+esc(x.name||'Game')+'</span></button>').join('');thumbs.querySelector('.active')?.scrollIntoView({block:'nearest',inline:'nearest',behavior:'smooth'});}
+function refresh(){if(typeof GAMES==='undefined')return;items=GAMES.filter(x=>x&&x.name).slice(0,12);if(selected>=items.length)selected=0;draw();}
+document.querySelector('.game-feature-prev').addEventListener('click',()=>{selected--;draw()});
+document.querySelector('.game-feature-next').addEventListener('click',()=>{selected++;draw()});
+thumbs.addEventListener('click',e=>{const b=e.target.closest('[data-i]');if(b){selected=Number(b.dataset.i);draw()}});
+const old=window.MAIDA_GAMES;window.MAIDA_GAMES=function(g){if(old)old(g);refresh()};
+refresh();
+})();
+</script></body>
 </html>
